@@ -8,6 +8,7 @@ import RegisterPage from '../../pages/RegisterPage/RegisterPage'
 import HomePage from '../../pages/HomePage/HomePage'
 
 function App() {
+
 	return (
 		<div className="App">
 			<Routes>

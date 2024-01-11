@@ -6,9 +6,12 @@ import {
     Box,
     Stack,
     FormErrorMessage,
+    useToast,
 } from "@chakra-ui/react"
 
 import { useForm } from 'react-hook-form'
+
+import { useCurrentUser } from "../../store/store"
 
 const LoginForm = () => {
     const {
@@ -16,38 +19,89 @@ const LoginForm = () => {
         handleSubmit,
         reset,
         formState: { errors }
-    } = useForm({mode: "onBlur"})
+    } = useForm({ mode: 'onBlur' })
 
-    const onSubmit = (data) => {
+    const {
+            loading,
+            getCurrentUser
+        } = useCurrentUser()
+
+    const toast = useToast()
+
+    const onSubmit = ({email, password}) => {
         reset()
-        console.log(data)
+
+        toast.promise(getCurrentUser(email, password), {
+            success: {
+                title: `Hi ${email}!`,
+                description: 'You has been successfully authorized!',
+                isClosable: true,
+                position: 'top'
+            },
+            error: {
+                title: 'Error!',
+                description: navigator.onLine ? 'Invalid email or password!' : null,
+                isClosable: true,
+                position: 'top'
+            },
+            loading: { 
+                title: 'Please wait...',
+                description: 'Trying to log in...',
+                isClosable: true,
+                position: 'top'
+            },
+        })
     }
 
+    return (
+        <LoginFormView
+            onSubmit={onSubmit}
+            handleSubmit={handleSubmit}
+            register={register}
+            errors={errors}
+            loading={loading}
+        />
+    )
+}
+
+const LoginFormView = (props) => {
+    const {
+        handleSubmit,
+        onSubmit,
+        errors,
+        register,
+        loading
+    } = props
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={3}>
                 <Box spacing='20px'>
-                    <FormControl isInvalid={errors.login}>
-                        <FormLabel>Login</FormLabel>
+                    <FormControl isInvalid={errors.email}>
+                        <FormLabel>Email</FormLabel>
                         <Input
-                            id='login'
+                            id='email'
                             size='lg'
-                            placeholder='Login'
-                            defaultValue='' 
-                            {...register('login', {
-                                required: 'Login is required',
+                            type='email'
+                            placeholder='Email'
+                            defaultValue=''
+                            {...register('email', {
+                                required: 'Email is required',
                                 minLength: {
-                                    value: 5,
-                                    message: 'At least 5 characters'
+                                    value: 6,
+                                    message: 'At least 6 characters'
                                 },
                                 maxLength: {
-                                    value: 20,
-                                    message: 'Maximum of 20 characters'
-                                }
+                                    value: 35,
+                                    message: 'Maximum of 35 characters'
+                                },
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'Invalid email format',
+                                },
                             })}
                         />
                         <FormErrorMessage>
-                            {errors.login && errors.login.message}
+                            {errors.email && errors.email.message}
                         </FormErrorMessage>
                     </FormControl>
                 </Box>
@@ -79,7 +133,8 @@ const LoginForm = () => {
                 <Button
                     mt={4}
                     colorScheme='teal'
-                    // isLoading={props.isSubmitting}
+                    isLoading={loading}
+                    loadingText='Submitting'
                     size='lg'
                     type='submit'
                 >

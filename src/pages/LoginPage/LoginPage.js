@@ -2,7 +2,6 @@ import LoginForm from '../../components/Login/Login'
 import {
     Container,
     Heading,
-    Flex,
     Box,
     AbsoluteCenter,
     Divider,
@@ -15,7 +14,7 @@ import { Link as RouterLink } from 'react-router-dom'
 const LoginPage = () => {
 
     return (
-        <Center height="90vh">
+        <Center minHeight="90vh" py={10}>
             <Container maxW='container.xl' centerContent>
                 <Heading fontSize='3xl' as='h1' py={10}>Sign in</Heading>
                 <Container

@@ -5,10 +5,12 @@ import {
     Button,
     Box,
     Stack,
-    FormErrorMessage,
+    FormErrorMessage
 } from "@chakra-ui/react"
 
 import { useForm } from 'react-hook-form'
+import { useToast } from "@chakra-ui/react"
+import { useCurrentUser } from "../../store/store"
 
 const RegisterForm = () => {
     const {
@@ -17,40 +19,102 @@ const RegisterForm = () => {
         reset,
         watch,
         formState: { errors }
-    } = useForm({mode: "onBlur"})
+    } = useForm({ mode: 'onBlur' })
 
-    const onSubmit = ({login, password}) => {
+    const {
+        loading,
+        error,
+        createUser
+    } = useCurrentUser()
+
+    const toast = useToast()
+
+    const onSubmit = ({ email, password }) => {
         reset()
-        console.log({login, password})
+        
+        // createUser(email, password)
+        const promise = createUser(email, password)
+
+        toast.promise(promise, {
+            success: {
+                title: `Welcome! ${email}!`,
+                description: 'You account has been created!',
+                isClosable: true,
+                position: 'top'
+            },
+            error: {
+                title: 'Error!',
+                description: navigator.onLine ? 'Email already in use!' : null,
+                isClosable: true,
+                position: 'top'
+            },
+            loading: { 
+                title: 'Please wait...',
+                description: 'Trying to create your account...',
+                isClosable: true,
+                position: 'top'
+            },
+        })
     }
 
+
     const password = watch('password', '')
+
+    return (
+        <RegisterFormView
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            register={register}
+            errors={errors}
+            password={password}
+            loading={loading}
+            error={error}
+        />
+    )
+}
+
+
+
+const RegisterFormView = (props) => {
+    const {
+        handleSubmit,
+        onSubmit,
+        register,
+        errors,
+        password,
+        loading
+    } = props
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={3}>
                 <Box spacing='20px'>
-                    <FormControl isInvalid={errors.login}>
-                        <FormLabel>Login</FormLabel>
+                    <FormControl isInvalid={errors.email}>
+                        <FormLabel>Email</FormLabel>
                         <Input
-                            id='login'
+                            id='email'
                             size='lg'
-                            placeholder='Login'
-                            defaultValue='' 
-                            {...register('login', {
-                                required: 'Login is required',
+                            type='email'
+                            placeholder='Email'
+                            defaultValue=''
+                            {...register('email', {
+                                required: 'Email is required',
                                 minLength: {
-                                    value: 5,
-                                    message: 'At least 5 characters'
+                                    value: 6,
+                                    message: 'At least 6 characters'
                                 },
                                 maxLength: {
-                                    value: 20,
-                                    message: 'Maximum of 20 characters'
-                                }
+                                    value: 35,
+                                    message: 'Maximum of 35 characters'
+                                },
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: 'Invalid email format',
+                                },
                             })}
                         />
                         <FormErrorMessage>
-                            {errors.login && errors.login.message}
+                            {errors.email && errors.email.message}
                         </FormErrorMessage>
                     </FormControl>
                 </Box>
@@ -65,8 +129,8 @@ const RegisterForm = () => {
                             {...register('password', {
                                 required: 'Password is required',
                                 minLength: {
-                                    value: 5,
-                                    message: 'At least 5 characters'
+                                    value: 6,
+                                    message: 'At least 6 characters'
                                 },
                                 maxLength: {
                                     value: 20,
@@ -100,6 +164,8 @@ const RegisterForm = () => {
                 <Button
                     mt={4}
                     colorScheme='teal'
+                    isLoading={loading}
+                    loadingText='Submitting'
                     // isLoading={props.isSubmitting}
                     size='lg'
                     type='submit'
