@@ -9,9 +9,20 @@ import {
     Link as ChakraLink
 } from '@chakra-ui/react'
 
-import { Link as RouterLink } from 'react-router-dom'
+import { useEffect } from 'react'
+
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useCurrentUser } from '../../store/store'
 
 const LoginPage = () => {
+    const navigate = useNavigate()
+    const currentUser = useCurrentUser(state => state.currentUser)
+
+    useEffect(() => {
+        if(currentUser) {
+            navigate('/', {replace: true})
+        }
+    }, [currentUser, navigate])
 
     return (
         <Center minHeight="90vh" py={10}>

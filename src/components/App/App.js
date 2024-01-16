@@ -7,6 +7,8 @@ import LoginPage from '../../pages/LoginPage/LoginPage'
 import RegisterPage from '../../pages/RegisterPage/RegisterPage'
 import HomePage from '../../pages/HomePage/HomePage'
 
+import ProtectedRoute from '../../hooks/ProtectedRoute'
+
 function App() {
 
 	return (
@@ -15,7 +17,11 @@ function App() {
 				<Route path='/' element={<Layout/>}>
 						<Route path="login" element={<LoginPage />} />
 						<Route path="register" element={<RegisterPage />} />
-						<Route path="home" element={<HomePage />} />
+						<Route index element={
+							<ProtectedRoute>
+								<HomePage />
+							</ProtectedRoute>
+						} />
 				</Route>
 			</Routes>
 		</div>

@@ -32,7 +32,6 @@ const RegisterForm = () => {
     const onSubmit = ({ email, password }) => {
         reset()
         
-        // createUser(email, password)
         const promise = createUser(email, password)
 
         toast.promise(promise, {
@@ -40,12 +39,14 @@ const RegisterForm = () => {
                 title: `Welcome! ${email}!`,
                 description: 'You account has been created!',
                 isClosable: true,
-                position: 'top'
+                position: 'top',
+                duration: 2000
             },
             error: {
                 title: 'Error!',
                 description: navigator.onLine ? 'Email already in use!' : null,
                 isClosable: true,
+                duration: 3000,
                 position: 'top'
             },
             loading: { 
@@ -133,8 +134,8 @@ const RegisterFormView = (props) => {
                                     message: 'At least 6 characters'
                                 },
                                 maxLength: {
-                                    value: 20,
-                                    message: 'Maximum of 20 characters'
+                                    value: 35,
+                                    message: 'Maximum of 35 characters'
                                 }
                             })}
                         />

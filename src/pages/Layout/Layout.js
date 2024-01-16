@@ -11,11 +11,9 @@ const Layout = () => {
 
     return (
         <div>
-            <header>Заголовок сайта</header>
             <main>
                 <Outlet />
             </main>
-            <footer>Подвал сайта</footer>
         </div>
     )
 }

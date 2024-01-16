@@ -36,12 +36,14 @@ const LoginForm = () => {
                 title: `Hi ${email}!`,
                 description: 'You has been successfully authorized!',
                 isClosable: true,
+                duration: 2000,
                 position: 'top'
             },
             error: {
                 title: 'Error!',
                 description: navigator.onLine ? 'Invalid email or password!' : null,
                 isClosable: true,
+                duration: 3000,
                 position: 'top'
             },
             loading: { 
@@ -120,8 +122,8 @@ const LoginFormView = (props) => {
                                     message: 'At least 5 characters'
                                 },
                                 maxLength: {
-                                    value: 20,
-                                    message: 'Maximum of 20 characters'
+                                    value: 35,
+                                    message: 'Maximum of 35 characters'
                                 }
                             })}
                         />
