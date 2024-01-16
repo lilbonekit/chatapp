@@ -20,18 +20,21 @@ const Conversation = () => {
     const { chatId } = useChatActionsStore()
     const { currentUser } = useCurrentUser()
 
+    useEffect(() => {
+        window.scrollTo(0, document.body.scrollHeight)
+    }, [messages])
 
     useEffect(() => {
         const unsub = onSnapshot(doc(db, 'chats', chatId), (doc) => {
             doc.exists() && setMessages(doc.data().messages)
             // console.log(doc)
         })
-
+        
         return () => {
             unsub()
         }
     }, [chatId])
-
+    
     // console.log(messages)
 
     return (
