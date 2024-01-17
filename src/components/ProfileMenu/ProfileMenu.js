@@ -29,7 +29,7 @@ const ProfileMenu = () => {
     return (
         <Popover>
             <PopoverTrigger>
-                <Button size={['ms', 'md', 'lg']} px={3} rightIcon={<ChevronDownIcon/>}>Profile</Button>
+                <Button size={['xs', 'md', 'lg']} p={5} rightIcon={<ChevronDownIcon/>}>Profile</Button>
             </PopoverTrigger>
             <PopoverContent>
                 <PopoverArrow />

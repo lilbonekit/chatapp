@@ -48,9 +48,10 @@ const Navbar = () => {
             w='full'
             position='fixed'
             borderBottomWidth='1px'
+            alignItems='center'
             zIndex={1}
             bg='white'
-            p={5}
+            p={[3, null, 5]}
         >
             {/* Header */}
             {userCurrentChat && <UserInfo email={userCurrentChat?.email} lastMsg='is your interlocutor' />}
@@ -69,8 +70,8 @@ const Navbar = () => {
                         variant='solid'
                         aria-label='Done'
                         fontSize='20px'
-                        px={4}
-                        size={['m', 'md', 'lg']}
+                        p={4}
+                        size={['md', 'md', 'lg']}
                         icon={<SearchIcon />}
                     />
                 </Tooltip>
@@ -106,6 +107,7 @@ const Navbar = () => {
                                     type='messageBlock'
                                     email={user.email}
                                     uid={user.uid}
+                                    // fontSizeTitle={['xs', 'md', 'lg']}
                                 />
                             </Stack>
                         }

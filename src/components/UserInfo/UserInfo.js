@@ -12,11 +12,21 @@ import { useCurrentUser } from "../../store/store"
 import useSearchStore from "../../store/searchStore"
 
 import useChatActionsStore from "../../store/chatStore"
+import { useEffect, useState } from "react"
 
 const UserInfo = (props) => {
     const { currentUser } = useCurrentUser()
     const { createChat, setCurrentChatId, setUserCurrentChat } = useChatActionsStore()
     const clear = useSearchStore(state => state.clear)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        if(window.innerWidth <= 800) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
+    }, [window.innerWidth])
 
     const {
         email = 'Hardcode',
@@ -24,7 +34,8 @@ const UserInfo = (props) => {
         lastMsg = '',
         isOnline = false,
         uid = null,
-        closeDrawer = () => {}
+        closeDrawer = () => {},
+        fontSizeTitle=''
     } = props
 
     const handleSelect = async () => {
@@ -54,8 +65,8 @@ const UserInfo = (props) => {
                 {isOnline ? <AvatarBadge boxSize='1.25em' bg='green.500' /> : null}
             </Avatar>
             <Flex flexDirection='column' spacing={5}>
-                <Heading size='s' as='h3'>
-                    {email}
+                <Heading fontSize={fontSizeTitle} as='h3'>
+                    {(email.length > 12 && isMobile) ? email.slice(0, 15) + '...' : email}
                 </Heading>
                 <Text fontSize='md' noOfLines={1}>
                     {lastMsg}

@@ -28,7 +28,7 @@ function HomePage() {
 				>
 					<Box
 						px={5}
-						w={['xs', 'sm', 'md', 'lg', '4xl', '5xl']}
+						w={['full', 'sm', 'md', 'lg', '4xl', '5xl']}
 						mx='auto'
 					>
 						{

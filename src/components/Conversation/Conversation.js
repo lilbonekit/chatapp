@@ -45,10 +45,13 @@ const Conversation = () => {
                         messages.map((m) => (
                             // console.log(currentUser.uid, m.senderId) ||
                             <Box
+                                size={['xs', 'md', 'xl']}
+                                sx={{maxW: '80%'}}
                                 key={m.id}
                                 bg={`${currentUser.uid === m.senderId ? 'green.100' : 'white'}`}
                                 alignSelf={`${currentUser.uid === m.senderId ? 'flex-end' : 'flex-start'}`}
-                                w='xs' p={3}
+                                // w='50px' 
+                                p={3}
                                 borderRadius={10}
                             >
                                 {m.text}
@@ -56,7 +59,7 @@ const Conversation = () => {
                         ))
                     ) : (
                         <AbsoluteCenter>
-                            <Text color='green.200' fontSize='4xl'>
+                            <Text color='green.200' fontSize={['md', null, '4xl']} textAlign='center'>
                             {chatId === 'null' ? 'Select a chat' : 'No messages'}
                             </Text>
                         </AbsoluteCenter>
