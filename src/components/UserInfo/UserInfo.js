@@ -26,7 +26,7 @@ const UserInfo = (props) => {
         } else {
             setIsMobile(false)
         }
-    }, [window.innerWidth])
+    }, [])
 
     const {
         email = 'Hardcode',
@@ -66,7 +66,7 @@ const UserInfo = (props) => {
             </Avatar>
             <Flex flexDirection='column' spacing={5}>
                 <Heading fontSize={fontSizeTitle} as='h3'>
-                    {(email.length > 12 && isMobile) ? email.slice(0, 15) + '...' : email}
+                    {(email.length  && isMobile) ? email.slice(0, 15) + '...' : email}
                 </Heading>
                 <Text fontSize='md' noOfLines={1}>
                     {lastMsg}
